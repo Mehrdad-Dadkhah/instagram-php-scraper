@@ -1220,8 +1220,13 @@ class Instagram
             if(isset($match[1])) {
                 $csrfToken = $match[1];
             }
-            $cookies = static::parseCookies($response->headers['Set-Cookie']);
-            $mid = $cookies['mid'];
+
+            $cookie = date('Y-m-d H');
+            $mid = uniqid();
+            if(isset($response->headers['Set-Cookie'])) {
+                $cookies = static::parseCookies($response->headers['Set-Cookie']);
+                $mid = $cookies['mid'];
+            }
             $headers = ['cookie' => "csrftoken=$csrfToken; mid=$mid;",
                 'referer' => Endpoints::BASE_URL . '/',
                 'x-csrftoken' => $csrfToken,
